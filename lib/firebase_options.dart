@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDbL-tCY1I07MfRx178i0cR9109f0farg8',
-    appId: '1:527491315824:android:9cf483d433dd0b8ce1dcb5',
-    messagingSenderId: '527491315824',
-    projectId: 'musicapp-c7b65',
-    storageBucket: 'musicapp-c7b65.appspot.com',
+    apiKey: 'AIzaSyBaZAuxNgxILOjp_YJcz2LBgYevDSKn-XM',
+    appId: '1:535702715906:android:f02b51143455ba5c4cb11b',
+    messagingSenderId: '535702715906',
+    projectId: 'musicapp-7588c',
+    storageBucket: 'musicapp-7588c.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCUL_WcAb9MSe-LJUvauvWewKaE384OBQ4',
-    appId: '1:527491315824:ios:fe193860eb8cdc3fe1dcb5',
-    messagingSenderId: '527491315824',
-    projectId: 'musicapp-c7b65',
-    storageBucket: 'musicapp-c7b65.appspot.com',
+    apiKey: 'AIzaSyChCC7AO--0adABDlDnZnDaEytyfp1sRLY',
+    appId: '1:535702715906:ios:9d7435e91614a3634cb11b',
+    messagingSenderId: '535702715906',
+    projectId: 'musicapp-7588c',
+    storageBucket: 'musicapp-7588c.appspot.com',
     iosBundleId: 'com.example.musicApp',
   );
 }
