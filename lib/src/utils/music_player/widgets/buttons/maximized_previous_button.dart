@@ -16,7 +16,7 @@ class MaximizedPreviousButton extends StatelessWidget {
       width: 50,
       child: IconButton(
         onPressed: audioPlayerProvider.previous,
-        icon: Image.asset('assets/image/previous.png'),
+        icon: Image.asset('assets/player/previous.png'),
       ),
     );
   }

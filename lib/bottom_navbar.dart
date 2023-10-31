@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'Src/Presentation/Views/Home/home.dart';
 import 'Src/Presentation/Views/Profile/profile.dart';
+import 'Src/Presentation/Widgets/play_audio.dart';
+import 'Src/utils/music_player/provider/audio_player_provider.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -22,6 +25,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Color(0xff0A091E),
         body: screens[currentIndex],

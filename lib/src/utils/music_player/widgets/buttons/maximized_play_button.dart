@@ -17,8 +17,8 @@ class MaximizedPlayButton extends StatelessWidget {
       child: IconButton(
           onPressed: audioPlayerProvider.play,
           icon: audioPlayerProvider.isPlaying
-              ? Image.asset('assets/image/pause_button.png')
-              : Image.asset('assets/image/play_button.png')),
+              ? Image.asset('assets/player/pause_button.png')
+              : Image.asset('assets/player/play_button.png')),
     );
   }
 }

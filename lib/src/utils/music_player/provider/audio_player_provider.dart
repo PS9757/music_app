@@ -229,7 +229,7 @@ class AudioPlayerProvider with ChangeNotifier {
       albumCover = _albumCoverPlaceHolder;
     }
     albumCover ??=
-        (await rootBundle.load('assets/image/album_cover_placeholder.png'))
+        (await rootBundle.load('assets/player/album_cover_placeholder.png'))
             .buffer
             .asUint8List();
     return albumCover;

@@ -29,10 +29,15 @@ class MaximizedAlbumCover extends StatelessWidget {
             ? height * 0.5
             : width * 0.7 / (mediaQuery.size.aspectRatio * 2),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            scale: 0.5,
-            image: MemoryImage(audioTrackPlayer.currentAlbumCover!),
-          ),
+            image: audioTrackPlayer.currentAlbumCover != null
+                ? DecorationImage(
+              scale: 0.5,
+              image: MemoryImage(audioTrackPlayer.currentAlbumCover!),
+            )
+                : DecorationImage(
+              scale: 0.5,
+              image: AssetImage('assets/player/album_cover_placeholder.png'),
+            )
         ),
       ),
     );

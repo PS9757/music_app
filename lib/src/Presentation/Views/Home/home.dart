@@ -4,9 +4,14 @@ import 'package:music_app/Src/Presentation/Views/Home/features/recently_played.d
 
 import 'features/recommended.dart';
 
-class HomeScreenPage extends StatelessWidget {
+class HomeScreenPage extends StatefulWidget {
   const HomeScreenPage({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreenPage> createState() => _HomeScreenPageState();
+}
+
+class _HomeScreenPageState extends State<HomeScreenPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -15,7 +20,7 @@ class HomeScreenPage extends StatelessWidget {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 21.0, right: 21.0, top: 21.0),
-            child: Expanded(
+            child: SingleChildScrollView(
               child: SizedBox(
                 height: size.height,
                 child: Column(
@@ -28,7 +33,8 @@ class HomeScreenPage extends StatelessWidget {
                         Row(
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(24)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24)),
                               child: Container(
                                 height: 48,
                                 width: 48,
@@ -116,7 +122,8 @@ class HomeScreenPage extends StatelessWidget {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              prefixIcon: Icon(Icons.search, color: Colors.white),
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.white),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 borderSide: BorderSide(color: Colors.white),
@@ -140,9 +147,7 @@ class HomeScreenPage extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
-                        height: size.height/8,
-                        child: RecentlyPlayed()),
+                    SizedBox(height: size.height / 8, child: RecentlyPlayed()),
                     SizedBox(height: 28),
                     Text(
                       "Recommend for you",

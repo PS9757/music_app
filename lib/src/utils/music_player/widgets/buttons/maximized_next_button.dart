@@ -17,7 +17,7 @@ class MaximizedNextButton extends StatelessWidget {
       width: 50,
       child: IconButton(
         onPressed: audioPlayerProvider.next,
-        icon: Image.asset('assets/image/next.png'),
+        icon: Image.asset('assets/player/next.png'),
       ),
     );
   }
