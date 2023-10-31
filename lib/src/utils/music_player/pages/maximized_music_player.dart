@@ -61,6 +61,12 @@ class MaximizedMusicPlayer extends StatefulWidget {
 class _MaximizedMusicPlayerState extends State<MaximizedMusicPlayer> {
   late AudioPlayerProvider audioPlayerProvider;
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
     audioPlayerProvider = Provider.of<AudioPlayerProvider>(context);

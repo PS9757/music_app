@@ -16,20 +16,20 @@ class RecentlyPlayed extends StatefulWidget {
 }
 
 class _RecentlyPlayedState extends State<RecentlyPlayed> {
-  AudioPlayerLogic audioPlayerLogic = AudioPlayerLogic();
-  @override
+  // AudioPlayerLogic audioPlayerLogic = AudioPlayerLogic();
+  // @override
   @override
   void initState() {
     super.initState();
 
     // Use Future.microtask to schedule the call after the build process.
-    Future.microtask(() {
-      Provider.of<AudioPlayerProvider>(context, listen: false)
-          .setAudioSource(audioPlayerLogic.playlist, 0);
+    // Future.microtask(() {
+    //   Provider.of<AudioPlayerProvider>(context, listen: false)
+    //       .setAudioSource(audioPlayerLogic.playlist, 0);
       // Alternatively, for playing a single track, use setSingleAudioSource
       // Provider.of<AudioPlayerProvider>(context, listen: false)
       //     .setSingleAudioSource(audioPlayerLogic.song);
-    });
+    // });
   }
 
 
@@ -46,7 +46,7 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: (){
-                Navigator.of(context).push(TheMaximizedPlayerRoute());
+                Navigator.of(context).push(MaximizedPlayerScreen(artist: "null", name: "null", photo: "null", url: "null", identifier: 0) as Route<Object?>);
                 // Provider.of<AudioPlayerProvider>(context, listen: false).play();
                 // MaximizedMusicPlayer(
                 //   playerCustomizer: NamedPlayerCustomizer(

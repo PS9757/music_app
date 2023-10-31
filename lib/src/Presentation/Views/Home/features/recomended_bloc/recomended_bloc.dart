@@ -3,6 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../../utils/music_player/modal/player/audio_track.dart';
+
 part 'recomended_event.dart';
 part 'recomended_state.dart';
 
@@ -49,6 +51,19 @@ class RecommendedBloc extends Bloc<RecomendedEvent, RecommendedState> {
         for (QueryDocumentSnapshot document in querySnapshot.docs) {
           musicList.add(document.data() as Map<String, dynamic>);
         }
+        List<AudioTrack> playlist = [];
+        for(int i=0;i<musicList.length;i++)
+          {
+            AudioTrack song = AudioTrack(
+                i,
+                title: musicList[i]['name'],
+                artist: musicList[i]['artist'],
+                duration: Duration.zero,
+                networkUrl: musicList[i]['songURL'],
+              // either filePath or networkUrl have to be provided
+            );
+            playlist.add(song);
+          }
 
         return musicList;
       } else {

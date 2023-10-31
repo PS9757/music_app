@@ -5,15 +5,15 @@ class AudioPlayerLogic {
   List<AudioTrack> playlist = [];
 
   // Constructor to initialize the playlist
-  AudioPlayerLogic() {
+  AudioPlayerLogic(String song, String artist, String url) {
     // Define and add audio tracks to the playlist
     AudioTrack song1 = AudioTrack(
       1,
-      title: 'Song 1',
-      artist: 'Artist 1',
+      title: song,
+      artist: artist,
       duration: Duration(seconds: 180), // Example duration
       // filePath: 'musics/music.mp3',
-      networkUrl: "https://firebasestorage.googleapis.com/v0/b/musicapp-7588c.appspot.com/o/Chaleya%20Jawan%20128%20Kbps.mp3?alt=media&token=46d8d48b-a275-486c-a984-232f27d6abb1"
+      networkUrl: url,
     );
 
     // AudioTrack song2 = AudioTrack(
