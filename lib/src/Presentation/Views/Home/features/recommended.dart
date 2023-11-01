@@ -28,6 +28,7 @@ class RecommendedSongs extends StatelessWidget {
             );
           } else if (state is RecommendedLoaded) {
             final musicData = state.musicData;
+            playlist.addAll(state.playlist);
             print("======================================${musicData}");
             return ListView.builder(
               padding: EdgeInsets.only(bottom: 120),
@@ -55,6 +56,7 @@ class RecommendedSongs extends StatelessWidget {
                         photo: musicData[index]['photo'],
                         url: musicData[index]['songURL'],
                         identifier: index,
+                        playlist: playlist,
                       )));
                       print("///////////////=========================${musicData[index]['songURL']}");
                     },

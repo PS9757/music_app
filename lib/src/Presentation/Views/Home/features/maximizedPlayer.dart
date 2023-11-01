@@ -13,13 +13,14 @@ class MaximizedPlayerScreen extends StatefulWidget {
   final String photo;
   final String url;
   final int identifier;
+  final List<AudioTrack> playlist;
 
   MaximizedPlayerScreen({
     required this.artist,
     required this.name,
     required this.photo,
     required this.url,
-    required this.identifier,
+    required this.identifier, required this.playlist,
   });
 
   @override
@@ -28,6 +29,17 @@ class MaximizedPlayerScreen extends StatefulWidget {
 
 class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
   var audioTrack;
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   initializeAudioSource();
+  // }
+  // void initializeAudioSource() {
+  //   final audioPlayerProvider = Provider.of<AudioPlayerProvider>(context, listen: true);
+  //   audioPlayerProvider.setAudioSource(widget.playlist, widget.identifier);
+  // }
+
   @override
   Widget build(BuildContext context) {
     // Create an AudioTrack for the selected song
@@ -40,10 +52,10 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
       networkUrl: widget.url,
     );
     // print("================================${audioTrack.networkUrl}");
-
-    // Set the audioTrack in AudioPlayerProvider
     final audioPlayerProvider = Provider.of<AudioPlayerProvider>(context, listen: true);
     audioPlayerProvider.setSingleAudioSource(audioTrack);
+    // Set the audioTrack in AudioPlayerProvider
+
 
     return MaximizedMusicPlayer(
       albumCover: Image.network(widget.photo),

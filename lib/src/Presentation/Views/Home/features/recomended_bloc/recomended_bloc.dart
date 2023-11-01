@@ -20,8 +20,9 @@ class RecommendedBloc extends Bloc<RecomendedEvent, RecommendedState> {
       emit(RecommendedLoading());
       try {
         final musicData = await getMusicCollection();
+        List<AudioTrack> playlist = await getPlaylist();
         if (musicData!.isNotEmpty) {
-          emit(RecommendedLoaded(musicData));
+          emit(RecommendedLoaded(musicData,playlist));
         } else {
           emit(RecommendedEmpty());
         }
@@ -66,6 +67,42 @@ class RecommendedBloc extends Bloc<RecomendedEvent, RecommendedState> {
           }
 
         return musicList;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      throw 'Error fetching music collection: $e';
+    }
+  }
+
+  Future<List<AudioTrack>> getPlaylist() async{
+    try {
+      CollectionReference musicCollection =
+      FirebaseFirestore.instance.collection('musicList');
+
+      QuerySnapshot querySnapshot = await musicCollection.get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        List<Map<String, dynamic>> musicList = [];
+
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          musicList.add(document.data() as Map<String, dynamic>);
+        }
+        List<AudioTrack> playlist = [];
+        for(int i=0;i<musicList.length;i++)
+        {
+          AudioTrack song = AudioTrack(
+            i,
+            title: musicList[i]['name'],
+            artist: musicList[i]['artist'],
+            duration: Duration.zero,
+            networkUrl: musicList[i]['songURL'],
+            // either filePath or networkUrl have to be provided
+          );
+          playlist.add(song);
+        }
+
+        return playlist;
       } else {
         return [];
       }

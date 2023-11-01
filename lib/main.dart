@@ -8,6 +8,7 @@ import 'package:music_app/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 
 import 'Src/Presentation/Views/Home/features/recomended_bloc/recomended_bloc.dart';
+import 'Src/Presentation/Views/Home/features/search_bloc/search_bar_focus_bloc.dart';
 import 'Src/utils/music_player/provider/audio_player_provider.dart';
 import 'firebase_options.dart';
 
@@ -36,8 +37,11 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BlocProvider(
-          create: (context) => RecommendedBloc(),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => RecommendedBloc()),
+            BlocProvider(create: (context) => SearchBarFocusBloc()),
+          ],
           child: BottomNavBar(),
         ),
       ),

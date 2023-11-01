@@ -9,8 +9,9 @@ class RecommendedLoading extends RecommendedState {}
 
 class RecommendedLoaded extends RecommendedState {
   final List<Map<String, dynamic>> musicData;// Adjust the data type accordingly
+  List<AudioTrack> playlist = [];
 
-  RecommendedLoaded(this.musicData);
+  RecommendedLoaded(this.musicData, this.playlist);
 }
 
 class RecommendedError extends RecommendedState {
