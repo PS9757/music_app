@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'otp_confirmation.dart';
 
 class SignUp extends StatefulWidget {
@@ -11,19 +12,15 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   TextEditingController mobileNumberController =
-      TextEditingController(text: "+91");
+  TextEditingController(text: "+91");
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool isPhoneNumber(String input) {
-    // Define a regular expression pattern for a 10-digit phone number
-    // This pattern matches a 10-digit number with optional dashes and spaces
-    final RegExp phonePattern = RegExp(r'^[0-9\- ]{10}$');
+  bool _isButtonDisabled = false;
 
-    // Use the RegExp's `hasMatch` method to check if the input matches the pattern
+  bool isPhoneNumber(String input) {
+    final RegExp phonePattern = RegExp(r'^[0-9\- ]{10}$');
     return phonePattern.hasMatch(input);
   }
-
-  bool _isButtonDisabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +37,9 @@ class _SignUpState extends State<SignUp> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: mobileNumberController,
+                  onChanged: (value) {
+
+                  },
                   decoration: InputDecoration(
                       hintText: "Mobile Number",
                       hintStyle: TextStyle(color: Colors.white),
@@ -60,45 +60,7 @@ class _SignUpState extends State<SignUp> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  _isButtonDisabled =
-                      true; // Disable the button while the request is processing.
-                });
-
-                if (_formKey.currentState!.validate()) {
-                  // The form is valid, proceed with sending OTP.
-                  await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: mobileNumberController.text,
-                    verificationCompleted:
-                        (PhoneAuthCredential credential) async {
-                      await FirebaseAuth.instance
-                          .signInWithCredential(credential);
-                    },
-                    verificationFailed: (FirebaseAuthException e) {
-                      if (e.code == 'invalid-phone-number') {
-                        print('The provided phone number is not valid.');
-                      }
-                    },
-                    codeSent: (String verificationId, int? resendToken) {
-                      // Now you can navigate after the request is complete.
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              OtpConfirm(verificationId: verificationId),
-                        ),
-                      );
-                    },
-                    codeAutoRetrievalTimeout: (String verificationId) {},
-                  );
-                }
-
-                setState(() {
-                  _isButtonDisabled =
-                      false; // Re-enable the button after the request is complete.
-                });
-              },
+              onPressed: _isButtonDisabled ? null : _sendOtp,
               child: _isButtonDisabled
                   ? CircularProgressIndicator() // Show a loading indicator while the request is ongoing.
                   : Text("Send OTP"),
@@ -107,5 +69,60 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void _sendOtp() async {
+    setState(() {
+      _isButtonDisabled = true; // Disable the button while the request is processing.
+    });
+
+    if (_formKey.currentState!.validate()&&mobileNumberController.text.length==13) {
+      // The form is valid, proceed with sending OTP.
+      try {
+        final PhoneVerificationCompleted verificationCompleted =
+            (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        };
+
+        final PhoneVerificationFailed verificationFailed =
+            (FirebaseAuthException e) {
+          if (e.code == 'invalid-phone-number') {
+            print('The provided phone number is not valid.');
+          }
+        };
+
+        final PhoneCodeSent codeSent =
+            (String verificationId, int? resendToken) {
+          // Now you can navigate after the request is complete.
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpConfirm(verificationId: verificationId),
+            ),
+          );
+        };
+
+        await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: mobileNumberController.text,
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: (String verificationId) {},
+        );
+      } catch (e) {
+        print('Failed to send OTP: $e');
+      }
+    }else{
+      Fluttertoast.showToast(
+          msg: "Please enter a valid mobile number",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    }
+
+    setState(() {
+      _isButtonDisabled = false; // Re-enable the button after the request is complete.
+    });
   }
 }

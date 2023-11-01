@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (context) => SearchBarFocusBloc()),
             BlocProvider(create: (context) => RecentlyplayedBloc()),
           ],
-          child: BottomNavBar(),
+          child: SignUp(),
         ),
       ),
     );

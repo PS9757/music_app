@@ -69,6 +69,10 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                                             bottomRight: Radius.circular(20),
                                           ),
                                         ),
+                                        child: Image.asset(
+                                            "assets/player/furation.png",
+
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: size.width * .024),
@@ -90,7 +94,7 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                                           textAlign: TextAlign.center,
                                         ),
                                         Text(
-                                          "Priyanshu",
+                                          "Furation",
                                           style: const TextStyle(
                                             fontFamily: "Nunito",
                                             fontSize: 20,
@@ -218,7 +222,18 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                             ),
                             Visibility(
                                 visible: !isSearchFocused,
-                                child: Expanded(child: RecommendedSongs()))
+                                child: Expanded(child: RecommendedSongs())),
+                            Visibility(
+                                visible: isSearchFocused,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 100.0),
+                                  child: Center(
+                                      child: Text(
+                                    "Soon Available",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )),
+                                )),
                           ],
                         ),
                       ),
