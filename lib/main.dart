@@ -7,7 +7,6 @@ import 'package:music_app/Src/Presentation/Views/Authentication/signUp.dart';
 import 'package:music_app/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 
-import 'Src/Presentation/Views/Home/features/maxplayerbloc/max_player_bloc.dart';
 import 'Src/Presentation/Views/Home/features/recomended_bloc/recomended_bloc.dart';
 import 'Src/Presentation/Views/Home/features/search_bloc/search_bar_focus_bloc.dart';
 import 'Src/utils/music_player/provider/audio_player_provider.dart';
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(create: (context) => RecommendedBloc()),
             BlocProvider(create: (context) => SearchBarFocusBloc()),
-            BlocProvider(create: (context)=> MaxPlayerBloc()),
           ],
           child: BottomNavBar(),
         ),
