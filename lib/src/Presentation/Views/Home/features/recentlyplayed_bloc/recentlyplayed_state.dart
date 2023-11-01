@@ -9,3 +9,4 @@ class changedata extends RecentlyplayedState{
   var data;
   changedata({this.data});
 }
+class datanull extends RecentlyplayedState{}

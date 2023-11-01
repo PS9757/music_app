@@ -12,8 +12,14 @@ class RecentlyplayedBloc
 
   RecentlyplayedBloc() : super(RecentlyplayedInitial()) {
     on<FetchRecentlyPlayedData>((event, emit) async {
-      list = box.get("musictrack");
-      emit(changedata(data: list));
+      if(box.get('musictrack')!=null){
+        list = box.get('musictrack');
+        emit(changedata(data: list));
+      }
+      else{
+        emit(datanull());
+      }
+      // emit(changedata(data: list));
     });
   }
 }

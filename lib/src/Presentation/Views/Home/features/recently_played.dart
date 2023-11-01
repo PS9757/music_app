@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,69 +43,76 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
       body: BlocBuilder<RecentlyplayedBloc, RecentlyplayedState>(
         bloc: RecentlyplayedBloc()..add(FetchRecentlyPlayedData()),
         builder: (context, state) {
+          if (state is datanull) {
+            return Center(
+              child: Text("No Recently Played Songs",style: TextStyle(color: Colors.white),),
+            );
+          }
           if (state is changedata) {
             var recentList = state.data;
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: recentList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      print(recentList);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MaximizedPlayerScreen(
-                            artist: recentList[index]['artist'],
-                            name: recentList[index]['name'],
-                            photo: recentList[index]['photo'],
-                            url: recentList[index]['url'],
-                            identifier: recentList[index]['identifier'],
-                            playlist: [],
-                          ),
-                        ),
-                      );
-                    },
-                    onLongPress: () {
-                      final audioPlayer = Provider.of<AudioPlayerProvider>(
-                              context,
-                              listen: false)
-                          .audioPlayer;
-                      audioPlayer?.pause();
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(right: 10),
-                            height: size.height / 10.15,
-                            width: size.width / 3.712,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: recentList.length==0
+                      ? 0
+                      : recentList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        print(recentList);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MaximizedPlayerScreen(
+                              artist: recentList[index]['artist'],
+                              name: recentList[index]['name'],
+                              photo: recentList[index]['photo'],
+                              url: recentList[index]['url'],
+                              identifier: recentList[index]['identifier'],
+                              playlist: [],
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                recentList[index]['photo'],
-                                fit: BoxFit.cover,
-                              ),
-                            )),
-                        Text(
-                          recentList[index]['name'],
-                          style: const TextStyle(
-                            fontFamily: "Nunito",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                            color: Color(0xfff3f3f3),
                           ),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  );
-                });
+                        );
+                      },
+                      onLongPress: () {
+                        final audioPlayer = Provider.of<AudioPlayerProvider>(
+                            context,
+                            listen: false)
+                            .audioPlayer;
+                        audioPlayer?.pause();
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(right: 10),
+                              height: size.height / 10.15,
+                              width: size.width / 3.712,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  recentList[index]['photo'],
+                                  fit: BoxFit.cover,
+                                ),
+                              )),
+                          Text(
+                            recentList[index]['name'],
+                            style: const TextStyle(
+                              fontFamily: "Nunito",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                              color: Color(0xfff3f3f3),
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                    );
+                  });
           }
           return Container();
         },
