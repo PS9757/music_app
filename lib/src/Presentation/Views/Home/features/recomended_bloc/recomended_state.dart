@@ -8,7 +8,7 @@ class RecommendedInitial extends RecommendedState {}
 class RecommendedLoading extends RecommendedState {}
 
 class RecommendedLoaded extends RecommendedState {
-  final List<Map<String, dynamic>> musicData; // Adjust the data type accordingly
+  final List<Map<String, dynamic>> musicData;// Adjust the data type accordingly
 
   RecommendedLoaded(this.musicData);
 }

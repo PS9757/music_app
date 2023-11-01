@@ -14,14 +14,27 @@ class OtpConfirm extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff0A091E),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: otpController,
-              decoration: InputDecoration(hintText: "Enter OTP"),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+
+                controller: otpController,
+                decoration: InputDecoration(
+                    hintText: "Enter OTP",
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    )
+                ),
+
+              ),
             ),
-            TextButton(
+            SizedBox(height: 20,),
+            ElevatedButton(
                 onPressed: () async {
                   phoneAuthCredential = PhoneAuthProvider.credential(
                       verificationId: verificationId,

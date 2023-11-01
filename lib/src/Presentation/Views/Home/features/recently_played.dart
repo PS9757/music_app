@@ -46,7 +46,7 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: (){
-                Navigator.of(context).push(MaximizedPlayerScreen(artist: "null", name: "null", photo: "null", url: "null", identifier: 0) as Route<Object?>);
+                // Navigator.of(context).push(MaximizedPlayerScreen(artist: "null", name: "null", photo: "null", url: "null", identifier: 0, list: [],) as Route<Object?>);
                 // Provider.of<AudioPlayerProvider>(context, listen: false).play();
                 // MaximizedMusicPlayer(
                 //   playerCustomizer: NamedPlayerCustomizer(

@@ -42,7 +42,7 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
     // print("================================${audioTrack.networkUrl}");
 
     // Set the audioTrack in AudioPlayerProvider
-    final audioPlayerProvider = Provider.of<AudioPlayerProvider>(context, listen: false);
+    final audioPlayerProvider = Provider.of<AudioPlayerProvider>(context, listen: true);
     audioPlayerProvider.setSingleAudioSource(audioTrack);
 
     return MaximizedMusicPlayer(
