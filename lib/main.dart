@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (context) => RecommendedBloc()),
             BlocProvider(create: (context) => SearchBarFocusBloc()),
           ],
-          child: BottomNavBar(),
+          child: SignUp(),
         ),
       ),
     );
