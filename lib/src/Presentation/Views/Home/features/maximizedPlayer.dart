@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:music_app/Src/utils/music_player/widgets/minimized_music_player.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../utils/music_player/modal/customizer/named_player_customizer.dart';
@@ -31,6 +32,7 @@ class MaximizedPlayerScreen extends StatefulWidget {
 
 class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
   var audioTrack;
+  bool isMinimized = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,125 +52,208 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
 
     // Set the audioTrack in AudioPlayerProvider
 
-    return MaximizedMusicPlayer(
-      albumCover: Image.network(widget.photo),
-      playPauseButton: IconButton(
-        icon: audioPlayerProvider.isPlaying
-            ? Icon(
-                Icons.pause,
+    return Stack(
+      children: [
+        MaximizedMusicPlayer(
+          albumCover: Image.network(widget.photo),
+          appbar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
                 color: Colors.white,
-                size: 25,
-              )
-            : Icon(
-                Icons.play_arrow,
+                size: 20,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Text(
+              "Now Playingcft",
+              style: TextStyle(
                 color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            centerTitle: true,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                  size: 25,
+                ),
+                onPressed: () {
+                  //fluttertoast
+                  Fluttertoast.showToast(
+                    msg: "Soon Available",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.black,
+                  );
+                },
+              ),
+            ],
+          ),
+          playPauseButton: IconButton(
+            icon: audioPlayerProvider.isPlaying
+                ? Icon(
+                    Icons.pause,
+                    color: Colors.white,
+                    size: 25,
+                  )
+                : Icon(
+                    Icons.play_arrow,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+            onPressed: () {
+              // Handle play/pause button action here
+              setState(() {
+                if (audioPlayerProvider.isPlaying) {
+                    audioPlayerProvider.audioPlayer?.pause();
+                } else {
+                  audioPlayerProvider.playSong();
+                }
+              });
+            },
+          ),
+          nextButton: IconButton(
+            icon: Icon(
+              Icons.skip_next,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {
+              //fluttertoast
+              Fluttertoast.showToast(
+                msg: "Soon Available",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                backgroundColor: Colors.white,
+                textColor: Colors.black,
+              );
+            },
+          ),
+          previousButton: IconButton(
+            icon: Icon(
+              Icons.skip_previous,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {
+              //fluttertoast
+              Fluttertoast.showToast(
+                msg: "Soon Available",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                backgroundColor: Colors.white,
+                textColor: Colors.black,
+              );
+            },
+          ),
+          playerCustomizer: NamedPlayerCustomizer(
+            // songTitleRowRight: Text(widget.name),
+            midRowFarLeft: IconButton(
+              icon: Icon(Icons.favorite),
+              onPressed: () {
+                print("hjdsvjf");
+                Fluttertoast.showToast(
+                  msg: "Soon Available",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black,
+                );
+              },
+            ),
+            midRowFarRight: IconButton(
+              icon: Icon(Icons.shuffle),
+              onPressed: () {
+                // Handle shuffle button action here
+                Fluttertoast.showToast(
+                  msg: "Soon Available",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black,
+                );
+              },
+            ),
+            midRowRight: IconButton(
+              icon: Icon(
+                !audioPlayerProvider.repeat
+                    ? Icons.repeat
+                    : Icons.repeat_one, // Change to your repeat icon
+                color: audioPlayerProvider.repeat
+                    ? Colors.blue // Change to the color you want for repeat mode
+                    : Colors.white, // Change to the color for non-repeat mode
                 size: 25,
               ),
-        onPressed: () {
-          // Handle play/pause button action here
-          setState(() {
-            if (audioPlayerProvider.isPlaying) {
-                audioPlayerProvider.playerState = PlayerState.paused;
-            } else {
-              audioPlayerProvider.playSong();
-            }
-          });
-        },
-      ),
-      nextButton: IconButton(
-        icon: Icon(
-          Icons.skip_next,
-          color: Colors.white,
-          size: 25,
+              onPressed: () {
+                // Toggle repeat mode
+                audioPlayerProvider.toggleRepeat();
+
+                // Optionally, show a toast to indicate the repeat mode
+                Fluttertoast.showToast(
+                  msg: audioPlayerProvider.repeat
+                      ? "Repeat mode enabled"
+                      : "Repeat mode disabled",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black,
+                );
+              },
+            ),
+
+          ),
+          // playPauseButton: IconButton(
+          //   icon: Icon(Icons.play_arrow),
+          //   onPressed: () {
+          //
+          //     // Handle play/pause button action here
+          //   },
+          // ),
+          backgroundDecoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment(1, 1),
+              colors: [
+                Provider.of<AudioPlayerProvider>(context).dominantColor,
+                Color.fromRGBO(32, 32, 32, 1),
+              ],
+              tileMode: TileMode.decal,
+            ),
+          ),
         ),
-        onPressed: () {
-          //fluttertoast
-          Fluttertoast.showToast(
-            msg: "Soon Available",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-          );
-        },
-      ),
-      previousButton: IconButton(
-        icon: Icon(
-          Icons.skip_previous,
-          color: Colors.white,
-          size: 25,
-        ),
-        onPressed: () {
-          //fluttertoast
-          Fluttertoast.showToast(
-            msg: "Soon Available",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-          );
-        },
-      ),
-      playerCustomizer: NamedPlayerCustomizer(
-        // songTitleRowRight: Text(widget.name),
-        midRowFarLeft: IconButton(
-          icon: Icon(Icons.favorite),
-          onPressed: () {
-            print("hjdsvjf");
-            Fluttertoast.showToast(
-              msg: "Soon Available",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              backgroundColor: Colors.white,
-              textColor: Colors.black,
-            );
-          },
-        ),
-        midRowFarRight: IconButton(
-          icon: Icon(Icons.shuffle),
-          onPressed: () {
-            // Handle shuffle button action here
-            Fluttertoast.showToast(
-              msg: "Soon Available",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              backgroundColor: Colors.white,
-              textColor: Colors.black,
-            );
-          },
-        ),
-        midRowRight: IconButton(
-          icon: Icon(Icons.repeat),
-          onPressed: () {
-            // Handle repeat button action here
-            Fluttertoast.showToast(
-              msg: "Soon Available",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              backgroundColor: Colors.white,
-              textColor: Colors.black,
-            );
-          },
-        ),
-      ),
-      // playPauseButton: IconButton(
-      //   icon: Icon(Icons.play_arrow),
-      //   onPressed: () {
-      //
-      //     // Handle play/pause button action here
-      //   },
-      // ),
-      backgroundDecoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment(1, 1),
-          colors: [
-            Provider.of<AudioPlayerProvider>(context).dominantColor,
-            Color.fromRGBO(32, 32, 32, 1),
-          ],
-          tileMode: TileMode.decal,
-        ),
-      ),
+        if(isMinimized)
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Material(
+                  child: MinimizedMusicPlayer(
+                    onTab: (){
+                      setState(() {
+                        isMinimized = false;
+                      });
+                    },
+                    color: audioPlayerProvider.dominantColor,
+                    nextButton: IconButton(
+                      onPressed: audioPlayerProvider.next,
+                      icon: const Icon(
+                        Icons.skip_next,
+                        color: Colors.white,
+                      ),
+                    ),
+                    progressBarBackgroundColor: Colors.white10,
+                    progressBarColor: Colors.white,
+                  ),
+                ))
+      ],
     );
   }
 }

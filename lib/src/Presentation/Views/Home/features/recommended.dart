@@ -9,18 +9,29 @@ import '../../../../utils/music_player/modal/player/audio_track.dart';
 import '../../../Widgets/play_audio.dart';
 import 'maximizedPlayer.dart';
 
-class RecommendedSongs extends StatelessWidget {
+class RecommendedSongs extends StatefulWidget {
   const RecommendedSongs({Key? key}) : super(key: key);
+
+  @override
+  State<RecommendedSongs> createState() => _RecommendedSongsState();
+}
+
+class _RecommendedSongsState extends State<RecommendedSongs> {
+  @override
+  void initState() {
+    super.initState();
+    RecommendedBloc().add(FetchRecommendedData());
+  }
   @override
   Widget build(BuildContext context) {
 
-    BlocProvider.of<RecommendedBloc>(context).add(FetchRecommendedData());
     // recommendedBloc.add(FetchRecommendedData());
     Size size = MediaQuery.of(context).size;
     List<AudioTrack> playlist = [];
     return Scaffold(
       backgroundColor: Color(0xff0A091E),
       body: BlocBuilder<RecommendedBloc, RecommendedState>(
+        bloc: RecommendedBloc()..add(FetchRecommendedData()),
         builder: (context, state) {
           if (state is RecommendedLoading) {
             return Center(
@@ -121,4 +132,6 @@ class RecommendedSongs extends StatelessWidget {
       ),
     );
   }
+
+
 }

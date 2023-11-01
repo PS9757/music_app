@@ -23,6 +23,8 @@ class OtpConfirm extends StatelessWidget {
               child: TextField(
 
                 controller: otpController,
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     hintText: "Enter OTP",
                     hintStyle: TextStyle(color: Colors.white),

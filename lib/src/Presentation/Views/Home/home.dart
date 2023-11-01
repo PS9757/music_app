@@ -31,10 +31,9 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return BlocProvider(
-        create: (context) => searchBarFocusBloc,
-        child: BlocBuilder<SearchBarFocusBloc, bool>(
-            builder: (context, isSearchFocused) {
+    return BlocBuilder<SearchBarFocusBloc, bool>(
+        bloc: searchBarFocusBloc,
+        builder: (context, isSearchFocused) {
           return Scaffold(
               backgroundColor: Color(0xff0A091E),
               body: SafeArea(
@@ -126,10 +125,12 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                                 width: size.width / 2.34,
                                 child: TextField(
                                   onTap: () {
-                                    searchBarFocusBloc.add(SearchBarFocusEvent.focus);
+                                    searchBarFocusBloc
+                                        .add(SearchBarFocusEvent.focus);
                                   },
                                   onTapOutside: (input) {
-                                    searchBarFocusBloc.add(SearchBarFocusEvent.unfocus);
+                                    searchBarFocusBloc
+                                        .add(SearchBarFocusEvent.unfocus);
                                     FocusScope.of(context).unfocus();
                                   },
                                   style: TextStyle(
@@ -186,7 +187,8 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                           Visibility(
                             visible: !isSearchFocused,
                             child: SizedBox(
-                                height: size.height / 8, child: RecentlyPlayed()),
+                                height: size.height / 8,
+                                child: RecentlyPlayed()),
                           ),
                           Visibility(
                               visible: !isSearchFocused,
@@ -220,6 +222,6 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                   ),
                 ),
               ));
-        }));
+        });
   }
 }

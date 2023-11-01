@@ -2,10 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'otp_confirmation.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({Key? key}) : super(key: key);
-  TextEditingController mobileNumberController = TextEditingController();
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  TextEditingController mobileNumberController = TextEditingController(text: "+91");
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _isButtonDisabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +37,10 @@ class SignUp extends StatelessWidget {
                       hintStyle: TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20))
+
                   ),
+
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter your mobile number';
@@ -42,10 +54,14 @@ class SignUp extends StatelessWidget {
             SizedBox(height: 20,),
             ElevatedButton(
               onPressed: () async {
+                setState(() {
+                  _isButtonDisabled = true; // Disable the button while the request is processing.
+                });
+
                 if (_formKey.currentState!.validate()) {
                   // The form is valid, proceed with sending OTP.
                   await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: '+91${mobileNumberController.text}',
+                    phoneNumber: mobileNumberController.text,
                     verificationCompleted: (PhoneAuthCredential credential) async {
                       await FirebaseAuth.instance.signInWithCredential(credential);
                     },
@@ -55,6 +71,7 @@ class SignUp extends StatelessWidget {
                       }
                     },
                     codeSent: (String verificationId, int? resendToken) {
+                      // Now you can navigate after the request is complete.
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -65,9 +82,16 @@ class SignUp extends StatelessWidget {
                     codeAutoRetrievalTimeout: (String verificationId) {},
                   );
                 }
+
+                setState(() {
+                  _isButtonDisabled = false; // Re-enable the button after the request is complete.
+                });
               },
-              child: Text("Send OTP"),
+              child: _isButtonDisabled
+                  ? CircularProgressIndicator() // Show a loading indicator while the request is ongoing.
+                  : Text("Send OTP"),
             ),
+
           ],
         ),
       ),
