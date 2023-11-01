@@ -21,7 +21,6 @@ class OtpConfirm extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-
                 controller: otpController,
                 keyboardType: TextInputType.number,
                 style: TextStyle(color: Colors.white),
@@ -29,13 +28,12 @@ class OtpConfirm extends StatelessWidget {
                     hintText: "Enter OTP",
                     hintStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    )
-                ),
-
+                        borderRadius: BorderRadius.circular(20))),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             ElevatedButton(
                 onPressed: () async {
                   phoneAuthCredential = PhoneAuthProvider.credential(

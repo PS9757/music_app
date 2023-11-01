@@ -22,9 +22,9 @@ class _RecommendedSongsState extends State<RecommendedSongs> {
     super.initState();
     RecommendedBloc().add(FetchRecommendedData());
   }
+
   @override
   Widget build(BuildContext context) {
-
     // recommendedBloc.add(FetchRecommendedData());
     Size size = MediaQuery.of(context).size;
     List<AudioTrack> playlist = [];
@@ -42,13 +42,13 @@ class _RecommendedSongsState extends State<RecommendedSongs> {
             playlist.addAll(state.playlist);
             print("======================================${musicData}");
             return ListView.builder(
-              padding: EdgeInsets.only(bottom: 120),
+                padding: EdgeInsets.only(bottom: 120),
                 physics: BouncingScrollPhysics(),
                 itemCount: musicData.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       // final audioTrack = AudioTrack(
                       //   index,  // Replace with a unique ID or appropriate identifier
                       //   title: musicData[index]['name'],
@@ -61,15 +61,19 @@ class _RecommendedSongsState extends State<RecommendedSongs> {
                       // // Set the audioTrack in AudioPlayerProvider
                       // final audioPlayerProvider = Provider.of<AudioPlayerProvider>(context, listen: false);
                       // audioPlayerProvider.setSingleAudioSource(playlist[index]);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MaximizedPlayerScreen(
-                        artist: musicData[index]['artist'],
-                        name: musicData[index]['name'],
-                        photo: musicData[index]['photo'],
-                        url: musicData[index]['songURL'],
-                        identifier: index,
-                        playlist: playlist,
-                      )));
-                      print("///////////////=========================${musicData[index]['songURL']}");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MaximizedPlayerScreen(
+                                    artist: musicData[index]['artist'],
+                                    name: musicData[index]['name'],
+                                    photo: musicData[index]['photo'],
+                                    url: musicData[index]['songURL'],
+                                    identifier: index,
+                                    playlist: playlist,
+                                  )));
+                      print(
+                          "///////////////=========================${musicData[index]['songURL']}");
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -123,7 +127,7 @@ class _RecommendedSongsState extends State<RecommendedSongs> {
                     ),
                   );
                 });
-          }else if (state is RecommendedError) {
+          } else if (state is RecommendedError) {
             return Text('Error: ${state.error}');
           } else {
             return Text('Unknown state');
@@ -132,6 +136,4 @@ class _RecommendedSongsState extends State<RecommendedSongs> {
       ),
     );
   }
-
-
 }

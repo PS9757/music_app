@@ -15,7 +15,6 @@ class RecommendedEmpty extends RecommendedState {
 
 class RecommendedBloc extends Bloc<RecomendedEvent, RecommendedState> {
   RecommendedBloc() : super(RecommendedInitial()) {
-    // Register the event handler for FetchRecommendedData
     on<FetchRecommendedData>((event, emit) async {
       emit(RecommendedLoading());
       try {
@@ -35,7 +34,6 @@ class RecommendedBloc extends Bloc<RecomendedEvent, RecommendedState> {
   @override
   Stream<RecommendedState> mapEventToState(RecomendedEvent event) async* {
     if (event is FetchRecommendedData) {
-      // The event handler for FetchRecommendedData is registered above.
     }
   }
 
@@ -61,7 +59,6 @@ class RecommendedBloc extends Bloc<RecomendedEvent, RecommendedState> {
                 artist: musicList[i]['artist'],
                 duration: Duration.zero,
                 networkUrl: musicList[i]['songURL'],
-              // either filePath or networkUrl have to be provided
             );
             playlist.add(song);
           }

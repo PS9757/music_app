@@ -10,9 +10,18 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  TextEditingController mobileNumberController = TextEditingController(text: "+91");
+  TextEditingController mobileNumberController =
+      TextEditingController(text: "+91");
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isPhoneNumber(String input) {
+    // Define a regular expression pattern for a 10-digit phone number
+    // This pattern matches a 10-digit number with optional dashes and spaces
+    final RegExp phonePattern = RegExp(r'^[0-9\- ]{10}$');
+
+    // Use the RegExp's `hasMatch` method to check if the input matches the pattern
+    return phonePattern.hasMatch(input);
+  }
 
   bool _isButtonDisabled = false;
 
@@ -28,7 +37,6 @@ class _SignUpState extends State<SignUp> {
               key: _formKey,
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: mobileNumberController,
@@ -36,10 +44,7 @@ class _SignUpState extends State<SignUp> {
                       hintText: "Mobile Number",
                       hintStyle: TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20))
-
-                  ),
-
+                          borderRadius: BorderRadius.circular(20))),
                   style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -51,19 +56,24 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             ElevatedButton(
               onPressed: () async {
                 setState(() {
-                  _isButtonDisabled = true; // Disable the button while the request is processing.
+                  _isButtonDisabled =
+                      true; // Disable the button while the request is processing.
                 });
 
                 if (_formKey.currentState!.validate()) {
                   // The form is valid, proceed with sending OTP.
                   await FirebaseAuth.instance.verifyPhoneNumber(
                     phoneNumber: mobileNumberController.text,
-                    verificationCompleted: (PhoneAuthCredential credential) async {
-                      await FirebaseAuth.instance.signInWithCredential(credential);
+                    verificationCompleted:
+                        (PhoneAuthCredential credential) async {
+                      await FirebaseAuth.instance
+                          .signInWithCredential(credential);
                     },
                     verificationFailed: (FirebaseAuthException e) {
                       if (e.code == 'invalid-phone-number') {
@@ -75,7 +85,8 @@ class _SignUpState extends State<SignUp> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OtpConfirm(verificationId: verificationId),
+                          builder: (context) =>
+                              OtpConfirm(verificationId: verificationId),
                         ),
                       );
                     },
@@ -84,14 +95,14 @@ class _SignUpState extends State<SignUp> {
                 }
 
                 setState(() {
-                  _isButtonDisabled = false; // Re-enable the button after the request is complete.
+                  _isButtonDisabled =
+                      false; // Re-enable the button after the request is complete.
                 });
               },
               child: _isButtonDisabled
                   ? CircularProgressIndicator() // Show a loading indicator while the request is ongoing.
                   : Text("Send OTP"),
             ),
-
           ],
         ),
       ),

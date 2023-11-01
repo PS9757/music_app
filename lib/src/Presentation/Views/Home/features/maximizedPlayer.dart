@@ -1,9 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:music_app/Src/utils/music_player/widgets/minimized_music_player.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../main.dart';
 import '../../../../utils/music_player/modal/customizer/named_player_customizer.dart';
 import '../../../../utils/music_player/modal/player/audio_track.dart';
 import '../../../../utils/music_player/pages/maximized_music_player.dart';
@@ -33,6 +35,23 @@ class MaximizedPlayerScreen extends StatefulWidget {
 class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
   var audioTrack;
   bool isMinimized = false;
+  late AudioPlayerProvider audioPlayerProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    audioPlayerProvider = Provider.of<AudioPlayerProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    // Release the audio player when the screen is disposed
+    if (audioPlayerProvider != null) {
+      audioPlayerProvider.stopAndReleaseAudioPlayer();
+    }
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +65,8 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
       networkUrl: widget.url,
     );
     // print("================================${audioTrack.networkUrl}");
-    final audioPlayerProvider =
-        Provider.of<AudioPlayerProvider>(context, listen: false);
+    // final audioPlayerProvider =
+    //     Provider.of<AudioPlayerProvider>(context, listen: false);
     audioPlayerProvider.setSingleAudioSource(audioTrack);
 
     // Set the audioTrack in AudioPlayerProvider
@@ -67,6 +86,7 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
               ),
               onPressed: () {
                 Navigator.pop(context);
+                audioPlayerProvider.stopAndReleaseAudioPlayer();
               },
             ),
             title: Text(
@@ -113,11 +133,23 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
               // Handle play/pause button action here
               setState(() {
                 if (audioPlayerProvider.isPlaying) {
-                    audioPlayerProvider.audioPlayer?.pause();
+                  audioPlayerProvider.audioPlayer?.pause();
                 } else {
                   audioPlayerProvider.playSong();
                 }
               });
+              var track = [
+                {
+                  "name": widget.name,
+                  "artist": widget.artist,
+                  "photo": widget.photo,
+                  "url": widget.url,
+                  "identifier": widget.identifier,
+                }
+              ];
+              box.put('musictrack', track);
+              print(box.get('musictrack'));
+              print("=================================");
             },
           ),
           nextButton: IconButton(
@@ -188,7 +220,8 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
                     ? Icons.repeat
                     : Icons.repeat_one, // Change to your repeat icon
                 color: audioPlayerProvider.repeat
-                    ? Colors.blue // Change to the color you want for repeat mode
+                    ? Colors
+                        .blue // Change to the color you want for repeat mode
                     : Colors.white, // Change to the color for non-repeat mode
                 size: 25,
               ),
@@ -208,7 +241,6 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
                 );
               },
             ),
-
           ),
           // playPauseButton: IconButton(
           //   icon: Icon(Icons.play_arrow),
@@ -229,30 +261,30 @@ class _MaximizedPlayerScreenState extends State<MaximizedPlayerScreen> {
             ),
           ),
         ),
-        if(isMinimized)
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Material(
-                  child: MinimizedMusicPlayer(
-                    onTab: (){
-                      setState(() {
-                        isMinimized = false;
-                      });
-                    },
-                    color: audioPlayerProvider.dominantColor,
-                    nextButton: IconButton(
-                      onPressed: audioPlayerProvider.next,
-                      icon: const Icon(
-                        Icons.skip_next,
-                        color: Colors.white,
-                      ),
+        if (isMinimized)
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Material(
+                child: MinimizedMusicPlayer(
+                  onTab: () {
+                    setState(() {
+                      isMinimized = false;
+                    });
+                  },
+                  color: audioPlayerProvider.dominantColor,
+                  nextButton: IconButton(
+                    onPressed: audioPlayerProvider.next,
+                    icon: const Icon(
+                      Icons.skip_next,
+                      color: Colors.white,
                     ),
-                    progressBarBackgroundColor: Colors.white10,
-                    progressBarColor: Colors.white,
                   ),
-                ))
+                  progressBarBackgroundColor: Colors.white10,
+                  progressBarColor: Colors.white,
+                ),
+              ))
       ],
     );
   }

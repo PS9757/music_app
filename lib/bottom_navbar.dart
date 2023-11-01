@@ -1,12 +1,9 @@
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-
 import 'Src/Presentation/Views/Home/home.dart';
 import 'Src/Presentation/Views/Profile/profile.dart';
-import 'Src/Presentation/Widgets/play_audio.dart';
-import 'Src/utils/music_player/provider/audio_player_provider.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -27,8 +24,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color(0xff0A091E),
-        body: screens[currentIndex],
+        backgroundColor: Color(0xff0A091E),
+        body: DoubleBackToCloseApp(
+            snackBar: const SnackBar(
+              backgroundColor: Colors.deepPurple,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(bottom: 20, left: 50, right: 50),
+              content: Text(
+                'Tap back again to leave',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            child: screens[currentIndex]),
         bottomNavigationBar: Container(
           height: size.width * .155,
           child: ListView.builder(
@@ -44,7 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               child: Padding(
-                padding:  EdgeInsets.symmetric(horizontal: size.width * .12),
+                padding: EdgeInsets.symmetric(horizontal: size.width * .12),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
